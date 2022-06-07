@@ -1,7 +1,17 @@
-const express = require('express');
+const express = require('express')
 const cors = require('cors')
+const path = require('path')
+const mongoose = require('mongoose')
+
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
+//alternatively use package 'ckey' for dotenv alternative, package uses dotenv config({ path: require('find-config')('.env) })
+//const ck = require('ckey);
+//var mongoURI = ck.mongouri;
 
 const app = express();
+
+var mongoURI = process.env.mongouri;
 
 app.use(
     cors({
@@ -10,7 +20,13 @@ app.use(
         credentials: true,
     })
 );
+app.use(express.json());
 
-app.use('/register', require('./routes/auth'))
+app.use('/api/user', require('./routes/auth'));
 
-app.listen(5000, ()=>{console.log("server running on port 5000")})
+
+mongoose
+.connect(mongoURI)
+.then(console.log("connected to DB"));
+
+app.listen(5000, ()=>{console.log(`server running on port 5000`)});
