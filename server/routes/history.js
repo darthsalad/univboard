@@ -1,19 +1,19 @@
 const router = require('express').Router()
-const auth = require('./validateToken')
+const user = require('../model/user');
+const getAuth = require('./validateToken')
 
-router.get('/history', auth , (req, res) => {
-    res.json({
-        history: [
-            {
-                text: "sample-text",
-                date: Date.now()
-            },
-            {
-                text: "sample-text 2",
-                date: Date.now()
-            }
-        ]
-    })
+router.get('/history', getAuth , async (req, res) => {
+    const history = await user.findById(
+        {
+            _id: req.user.user
+        }
+    )
+
+    try {
+        res.send(history.clips);
+    } catch(err) {
+        res.status(400).send(err);
+    }
 });
 
 module.exports = router;
