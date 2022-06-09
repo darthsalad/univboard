@@ -18,10 +18,20 @@ const userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
+    clips: [ {
+        date: {
+            type: Date,
+            deafult: Date.now
+        },
+        text: {
+            type: String,
+            min: 4
+        }
+    } ],
     date: {
         type: Date,
         default: Date.now
     }
 });
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);

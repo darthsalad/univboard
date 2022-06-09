@@ -16,4 +16,4 @@ router.get('/history', auth , (req, res) => {
     })
 });
 
-module.exports = router
+module.exports = router;
