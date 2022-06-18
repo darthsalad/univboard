@@ -40,12 +40,24 @@ router.post('/login', async (req, res) => {
     if(!validPassword) return res.status(400).send("Email or password incorrect\nPlease check again");
 
     const token = jwt.sign({user: user._id}, process.env.TOKEN_SECRET);
-    if(token) return res.header('auth-token', token).send(token);
+    if(token) return res.cookie("auth-token", token, {
+        maxAge: 1296 * Math.pow(10, 6),         //15 days in ms
+        // secure: false,
+        httpOnly: false
+    }).header('auth-token', token).send(user);
 });
 
-router.get('/getUser', getAuth, (req, res) => {
-    res.send(req.user);
+router.get('/auth', getAuth, (req, res) => {
+    if(req.user) return res.send({auth: true, data: req.user, "cookie": req.cookies})
+    // res.send(req.user);
     // User.findById(req.user);
+});
+
+router.get('/logout', getAuth, async (req, res) => {
+    res.cookie('auth-token', 'none', {
+        expires: new Date(Date.now() + 5 * 1000),
+        httpOnly: false,
+    }).send({message: "user logged out successfully", data: res})
 });
 
 module.exports = router;

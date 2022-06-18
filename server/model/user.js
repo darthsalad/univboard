@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     clips: [ {
         date: {
             type: Date,
-            deafult: Date.now
+            default: Date.now
         },
         text: {
             type: String,

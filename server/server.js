@@ -2,7 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const mongoose = require('mongoose')
-
+const bodyParser = require('body-parser')
+const multer = require('multer')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 //alternatively use package 'ckey' for dotenv alternative, package uses dotenv config({ path: require('find-config')('.env) })
@@ -10,6 +11,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 //var mongoURI = ck.mongouri;
 
 const app = express();
+const upload = multer();
 
 var mongoURI = process.env.mongouri;
 
@@ -21,6 +23,9 @@ app.use(
     })
 );
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.array()); 
+app.use(express.static('public'));
 
 app.use('/api/user', require('./routes/auth'));
 app.use('/api', require('./routes/history'));
