@@ -48,16 +48,17 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/auth', getAuth, (req, res) => {
-    if(req.user) return res.send({auth: true, data: req.user, "cookie": req.cookies})
+    if(req.user) return res.send({auth: true, data: req.user});
     // res.send(req.user);
     // User.findById(req.user);
 });
 
 router.get('/logout', getAuth, async (req, res) => {
-    res.cookie('auth-token', 'none', {
-        expires: new Date(Date.now() + 5 * 1000),
+    if(req.user) return res.cookie('auth-token', 'none', {
+        expires: new Date(Date.now() + 1 * 1000),
         httpOnly: false,
-    }).send({message: "user logged out successfully", data: res})
+    }).send({message: "user logged out successfully"})
+    console.log(res, req);
 });
 
 module.exports = router;
