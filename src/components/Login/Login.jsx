@@ -18,13 +18,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { NavLink } from "react-router-dom"
 import axios from "axios"
+import { AuthContext } from "../../AuthContext"
+import { useContext } from "react"
 
 const Login = () => {
     const [values, setValues] = React.useState({
         email: "",
         password: "",
         seePassword: false,
-        // auth: false
     });
 
     const handleChange = (prop) => (e) => {
@@ -37,50 +38,19 @@ const Login = () => {
           seePassword: !values.seePassword,
         });
     };
-
-    // const handleAuth = (data) => {
-    //     setValues({
-    //       ...values,
-    //       auth: data,
-    //     });
-    //   };
       
-      const handleMouseDownPassword = (e) => {
+    const handleMouseDownPassword = (e) => {
         e.preventDefault();
     }
+
+    const auth = useContext(AuthContext);
 
     const darkTheme = createTheme({
       palette: {
           mode: 'dark',
         },
       });
-    
-    // var present = document.cookie.indexOf('auth-token=');
-
-    // const token = present === -1
-    //   ? null
-    //   : document.cookie.split('; ').find(row => row.startsWith('auth-token=')).split('=')[1];
       
-
-    // React.useEffect(() => {
-    //   async function checkAuth() {
-    //     await axios({
-    //       method: 'get',
-    //       url: 'http://localhost:5000/api/user/getUser',
-    //       withCredentials: true,
-    //       headers: {"auth-token": token}
-    //     }).then((props) => {
-    //       console.log(props.data.auth, props.data, typeof(props.data.auth))
-    //       if(props.data.auth) return handleAuth(props.data.auth);
-    //     }).catch((err) => {
-    //       console.log(err.response)
-    //     })
-    //   }
-    //   checkAuth();
-    //   console.log(values.auth);
-    //   //eslint-disable-next-line
-    // }, [])
-
     var formdata = new FormData();
     formdata.append('email', values.email);
     formdata.append('password', values.password);
@@ -97,27 +67,13 @@ const Login = () => {
       }).catch((err) => {
         console.log(err);
       });
-
-      // await axios({
-      //   method: 'get',
-      //   url: 'http://localhost:5000/api/user/getUser',
-      //   withCredentials: true,
-      //   headers: {"auth-token": token}
-      // }).then((props) => {
-      //   console.log(props.data.auth, props.data, typeof(props.data.auth))
-      //   if(props.data.auth) return handleAuth();
-      // }).catch((err) => {
-      //   console.log(err)
-      // });
-
-      // console.log(values.auth);
     }
 
     return (
-      // values.auth 
-      // ? window.location="/"
-      // :<ThemeProvider theme={darkTheme}>
-      <ThemeProvider theme={darkTheme}>
+      auth 
+      ? window.location="/"
+      :<ThemeProvider theme={darkTheme}>
+      {/* <ThemeProvider theme={darkTheme}> */}
         <div
           style={{
             minHeight: "100vh",
@@ -151,7 +107,7 @@ const Login = () => {
                 <FormControl style={{ margin: "20px"}}>
                   <InputLabel htmlFor="login-email">Email</InputLabel>
                   <OutlinedInput
-                    id="component-outlined"
+                    id="email-outlined"
                     value={values.email}
                     onChange={handleChange("email")}
                     label="Email"
@@ -160,7 +116,7 @@ const Login = () => {
                 <FormControl style={{ margin: "20px" }}>
                   <InputLabel htmlFor="login-password">Password</InputLabel>
                   <OutlinedInput
-                    id="component-outlined"
+                    id="password-outlined"
                     type={values.seePassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}

@@ -1,12 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { NavLink } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { Button } from '@mui/material'
-import { useAuth, token } from '../../authState'
+import { token, AuthContext } from '../../AuthContext'
 import axios from "axios"
 
 const Home = () => {
-  const auth = useAuth();
+  const auth = useContext(AuthContext);
 
   const darkTheme = createTheme({
     palette: {
@@ -33,12 +33,43 @@ const Home = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div>
+      <div
+        style={{
+            minHeight: "100vh",
+            minWidth: '100vw',
+            width: 'auto',
+            backgroundColor: "#374151",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 'auto 10%'
+        }}
+      >
         Home Page
-        <NavLink style={{ textDecoration: "none" }} to="/login">
-          <Button variant="outlined">login</Button>
-        </NavLink>
-        <Button onClick={logout} variant="outlined">logout</Button>
+        {auth
+          ? 
+          <div
+            style={{
+
+            }}
+          >
+            <div className="navbar">
+              <NavLink style={{ textDecoration: "none" }} to="/profile">
+                <Button variant="outlined">Profile</Button>
+              </NavLink>
+              <Button onClick={logout} variant="outlined">logout</Button>
+            </div>
+            <div>
+              {auth.data.user}
+            </div>
+          </div> 
+          : 
+          <>
+            <NavLink style={{ textDecoration: "none" }} to="/login">
+              <Button variant="outlined">login</Button>
+            </NavLink>
+          </>
+        }
       </div>
     </ThemeProvider>
   );
