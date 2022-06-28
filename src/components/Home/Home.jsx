@@ -1,11 +1,16 @@
 import React, { useContext } from "react"
-import { NavLink } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
-import { Button } from '@mui/material'
+import { 
+  Card, 
+  CardContent, 
+  CardActionArea, 
+  Typography 
+} from '@mui/material'
 import { token, AuthContext } from '../../AuthContext'
 import axios from "axios"
 
 const Home = () => {
+  const [clips, setClips] = React.useState([]);
   const auth = useContext(AuthContext);
 
   const darkTheme = createTheme({
@@ -15,37 +20,38 @@ const Home = () => {
   });
 
   React.useEffect(() => {
-    console.log(auth);
+    const fetchClips = async() => {
+      await axios({
+        url: "http://localhost:5000/api/history",
+        method: "get",
+        withCredentials: true,
+        headers: {'auth-token': token}
+      }).then((props) => {
+        // console.log(props.data);
+        setClips(props.data)
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+    fetchClips();
+    // console.log(auth);
     // eslint-disable-next-line
   }, [])
-
-  const logout = async() => {
-    await axios({
-      method: 'get',
-      url: 'http://localohost:5000/api/user/logout',
-      withCredentials: true,
-      headers: {"auth-token": token}
-    }).then((props) => {
-      localStorage.removeItem('auth-token')
-      console.log(props);
-    })
-  }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <div
         style={{
-            minHeight: "100vh",
-            minWidth: '100vw',
+            margin: 0,
+            height: "auto",
             width: 'auto',
-            backgroundColor: "#374151",
-            display: 'flex',
+            backgroundColor: "#2b2a33",
+            // display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             padding: 'auto 10%'
         }}
       >
-        Home Page
         {auth
           ? 
           <div
@@ -53,21 +59,36 @@ const Home = () => {
 
             }}
           >
-            <div className="navbar">
-              <NavLink style={{ textDecoration: "none" }} to="/profile">
-                <Button variant="outlined">Profile</Button>
-              </NavLink>
-              <Button onClick={logout} variant="outlined">logout</Button>
-            </div>
             <div>
-              {auth.data.user}
+              <Typography variant="h3">Clipboard</Typography>
+              {clips.map((item) => {
+                  return (
+                    <Card
+                      key={item._id} 
+                      sx={{
+                          margin: "20px 10px",
+                          maxWidth: 345, 
+                        }}
+                    >
+                      <CardActionArea>
+                        <CardContent>
+                          {/* <Typography gutterBottom variant="h5" component="div">
+                            Note Title 
+                            <Typography variant="body1" color="text.secondary">Date</Typography>
+                          </Typography> */}
+                          <Typography variant="body1" color="text.secondary">
+                            {item.text}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  )
+              })}
             </div>
           </div> 
           : 
           <>
-            <NavLink style={{ textDecoration: "none" }} to="/login">
-              <Button variant="outlined">login</Button>
-            </NavLink>
+            Please Login to see your clipboard history
           </>
         }
       </div>

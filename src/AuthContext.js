@@ -35,7 +35,6 @@ const AuthProvider = ({children}) => {
         }
         checkAuth();
         // console.log(auth);
-        // eslint-disable-next-line
     }, [auth]);
 
     return(

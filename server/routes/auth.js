@@ -51,21 +51,28 @@ router.post("/login", async (req, res) => {
         httpOnly: false,
       })
       .header("auth-token", token)
-      .send(
-            { 
-                id: user._id, 
-                name: user.name, 
-                email: user.email, 
-                clipboard: user.clips.length,
-                date_created: user.date 
-            }
-        );
+      .send({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        clipboard: user.clips.length,
+        date_created: user.date,
+      });
 });
 
-router.get("/auth", getAuth, (req, res) => {
-  if (req.user) return res.send({ auth: true, data: req.user });
-  // res.send(req.user);
-  // User.findById(req.user);
+router.get("/auth", getAuth, async (req, res) => {
+  const user = await User.findById(req.user.user);
+  if (req.user)
+    return res.send({
+      auth: true,
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        clipboard: user.clips.length,
+        date_created: user.date,
+      },
+    });
 });
 
 router.get("/logout", getAuth, async (req, res, next) => {

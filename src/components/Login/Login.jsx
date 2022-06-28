@@ -63,7 +63,8 @@ const Login = () => {
         withCredentials: true,
         headers: {"Content-Type": "multipart/form-data"}
       }).then((props) => {
-        console.log(props)
+        console.log(props);
+        window.location="/"
       }).catch((err) => {
         console.log(err);
       });
@@ -73,7 +74,6 @@ const Login = () => {
       auth 
       ? window.location="/"
       :<ThemeProvider theme={darkTheme}>
-      {/* <ThemeProvider theme={darkTheme}> */}
         <div
           style={{
             minHeight: "100vh",
