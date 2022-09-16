@@ -30,6 +30,7 @@ app.use(express.static('public'));
 app.use('/api/user', require('./routes/auth'));
 app.use('/api', require('./routes/history'));
 app.use('/api', require('./routes/post'));
+app.use('/api', require('./routes/edit'));
 
 
 mongoose
