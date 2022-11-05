@@ -22,7 +22,7 @@ const Home = () => {
   React.useEffect(() => {
     const fetchClips = async() => {
       await axios({
-        url: "http://localhost:5000/api/history",
+        url: "http://localhost:5000/api/clips/history",
         method: "get",
         withCredentials: true,
         headers: {'auth-token': token}

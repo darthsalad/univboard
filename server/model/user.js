@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         text: {
             type: String,
             min: 4
+        },
+        owner: {
+            type: String,
+            required: true
         }
     } ],
     date: {

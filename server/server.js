@@ -13,7 +13,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const app = express();
 const upload = multer();
 
-var mongoURI = process.env.mongouri;
+const mongoURI = process.env.mongouri;
 
 app.use(
     cors({
@@ -28,13 +28,15 @@ app.use(upload.array());
 app.use(express.static('public'));
 
 app.use('/api/user', require('./routes/auth'));
-app.use('/api', require('./routes/history'));
-app.use('/api', require('./routes/post'));
-app.use('/api', require('./routes/edit'));
+app.use('/api/clips', require('./routes/history'));
+app.use('/api/clips', require('./routes/post'));
+app.use('/api/clips', require('./routes/edit'));
+app.use('/api', require('./routes/share'));
+app.use('/api', require('./routes/clipboard'));
 
 
 mongoose
 .connect(mongoURI)
-.then(console.log("connected to DB"));
+.then(console.log("Connected to DB"));
 
-app.listen(5000, ()=>{console.log(`server running on port 5000`)});
+app.listen(5000, ()=>{console.log(`Server running on port 5000`)});
