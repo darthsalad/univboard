@@ -8,6 +8,8 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import Login from "./pages/Auth/Login";
 import Forgot from "./pages/Auth/Forgot";
+import Reset from "./pages/Auth/Reset";
+import { ErrorPage } from "./pages/Error/Error";
 // import LoaderAnimation from "./components/Loader/Loader";
 
 function App() {
@@ -23,7 +25,9 @@ function App() {
                 <Routes>
                   <Route path="/" element={auth ? <Home /> : <Login />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/reset_password" element={<Forgot />} />
+                  <Route path="/forgot_password" element={<Forgot />} />
+                  <Route path="/reset_password/:token" element={<Reset />} />
+                  <Route path="/error" element={<ErrorPage />} />
                 </Routes>
             </AuthProvider>
           </BrowserRouter>

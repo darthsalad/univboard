@@ -87,7 +87,7 @@ const Login = () => {
               href="#"
               size="sm"
               onClickCapture={() => {
-                window.location.href = "/reset_password";
+                window.location.href = "/forgot_password";
               }}
             >
               Forgot password?

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
         max: 1024,
         min: 6
     },
-    clips: [ {
+    clips: [{
         date: {
             type: Date,
             default: new Date()
@@ -31,8 +31,16 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    } ],
+    }],
     date: {
+        type: Date,
+        default: new Date()
+    },
+    resetPasswordToken: {
+        type: String,
+        default: ""
+    },
+    resetPasswordExpires: {
         type: Date,
         default: new Date()
     }

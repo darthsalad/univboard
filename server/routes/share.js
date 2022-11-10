@@ -45,6 +45,15 @@ router.get('/users', getAuth, async (req, res) => {
     } catch (err) {
         res.status(400).send(err);
     }
-})
+});
+
+router.delete('/delete_account', getAuth, async(req, res) => {
+    try {
+        await User.deleteOne({_id: req.user.user});
+        res.status(200).send({data: "User successfully deleted"});
+    } catch (err) {
+        res.status(400).send(err);        
+    }
+});
 
 module.exports = router;
