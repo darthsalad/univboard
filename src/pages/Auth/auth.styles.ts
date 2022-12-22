@@ -8,20 +8,14 @@ export const useStyles = createStyles((theme) => ({
     },
 
     wrapper: {
-      paddingTop: theme.spacing.xl * 4,
-      paddingBottom: theme.spacing.xl * 4,
+      padding: "50px 10px",
     },
   
     title2: {
       fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-      fontWeight: 900,
+      fontWeight: 600,
       marginBottom: theme.spacing.md,
       textAlign: 'center',
-  
-      [theme.fn.smallerThan('sm')]: {
-        fontSize: 28,
-        textAlign: 'left',
-      },
     },
   
     description: {

@@ -28,6 +28,7 @@ app.use(upload.array());
 app.use(express.static('public'));
 
 app.use('/api/user', require('./routes/auth'));
+app.use('/api/user', require('./routes/forgot'));
 app.use('/api/clips', require('./routes/history'));
 app.use('/api/clips', require('./routes/post'));
 app.use('/api/clips', require('./routes/edit'));

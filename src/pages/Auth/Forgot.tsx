@@ -18,25 +18,12 @@ import axios from "axios";
 export function Forgot() {
   const { classes } = useStyles();
   const [email, setEmail] = useState("");
+  const [visible, setVisible] = useState(false);
   
   const formData = new FormData();
   formData.append("email", email);
 
-  const submitted = () => {
-    return(
-      <Container className={classes.wrapper}>
-      <Title className={classes.title2}>title</Title>
-
-      <Container size={560} p={0}>
-        <Text size="sm" className={classes.description}>
-          description
-        </Text>
-      </Container>
-      </Container>
-    );
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = async() => {
     await axios({
       method: "POST",
       url: "http://localhost:5000/api/user/forgot_password",
@@ -44,11 +31,11 @@ export function Forgot() {
       data: formData,
       withCredentials: true
     }).then(function (res) {
-        console.log(res.data);
-        submitted();
-      }).catch(function (error) {
-        console.error(error);
-      });
+      console.log(res.data);
+      setVisible(true);
+    }).catch(function (error) {
+      console.error(error);
+    });
   };
 
   return (
@@ -83,6 +70,17 @@ export function Forgot() {
           <Button onClick={handleSubmit} className={classes.control}>Reset password</Button>
         </Group>
       </Paper>
+        {visible ?
+          <Container className={classes.wrapper}>
+            <Title className={classes.title2}>Reset password mail successfully sent!</Title>
+      
+            <Container size={560} p={0}>
+              <Text size="sm" className={classes.description}>
+                Please check your mail for the link to change the password of your account
+              </Text>
+            </Container>
+          </Container>
+        : null}
     </Container>
   );
 }

@@ -22,7 +22,7 @@ const AuthProvider = ({children}: any) => {
         withCredentials: true,
         headers: {"auth-token": token}
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         setAuth(res.data);
       }).catch((err) => {
         console.log(err);

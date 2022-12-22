@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   PasswordInput,
   Paper,
   Title,
   Container,
   Button,
+  Text
 } from "@mantine/core";
 import axios from "axios";
 import { useStyles } from "./auth.styles";
+import { useParams } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 
 const Reset = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [visible, setVisible] = useState(false);
   const { classes } = useStyles();
+  let { resetToken } = useParams();
+  const auth = useContext(AuthContext);
 
   var formdata = new FormData();
   formdata.append("password", password);
@@ -21,16 +27,26 @@ const Reset = () => {
     return password === confirmPassword ? true : false;
   };
 
-  const handleSubmit = () => {
-    console.log(password, confirmPassword);
-    // await axios({
-    //     method: "POST"
-    // })
+  const handleSubmit = async() => {
+    console.log(password, confirmPassword, resetToken);
+    await axios({
+        method: "POST",
+        url: `http://localhost:5000/api/user/new_password/${resetToken}`,
+        headers: {"Content-Type":"multipart/form-data"},
+        data: formdata,
+        withCredentials: true
+    }).then((res) => {
+      console.log(res);
+      setVisible(true);
+    }).catch((err) => {
+      console.log(err);
+    })
   };
 
   return (
     <div>
-      <Container size={420} my={40}>
+      {auth ? window.location.href="/"
+      : <Container size={420} my={40}>
         <Title
           align="center"
           sx={(theme) => ({
@@ -40,7 +56,6 @@ const Reset = () => {
         >
           Set a new password
         </Title>
-
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <PasswordInput
             label="Password"
@@ -67,7 +82,19 @@ const Reset = () => {
             Sign in
           </Button>
         </Paper>
+          {visible ?
+          <Container className={classes.wrapper}>
+            <Title className={classes.title2}>Password Changed!</Title>
+      
+            <Container size={560} p={0}>
+              <Text size="sm" className={classes.description}>
+                Password changed successfully, login <a href="/login">here</a>
+              </Text>
+            </Container>
+          </Container>
+        : null}
       </Container>
+      }
     </div>
   );
 };
