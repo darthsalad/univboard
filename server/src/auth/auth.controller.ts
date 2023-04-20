@@ -11,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { UpdateAuthDto } from './dto/update-auth.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
@@ -65,6 +66,33 @@ export class AuthController {
       // jwtToken: token,
       id: res.user._id,
       email: res.user.email,
+    });
+  }
+
+  @Get('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('jwt');
+    return response.status(200).json({
+      message: 'User logged out successfully',
+    });
+  }
+
+  @Post('update-password')
+  @UseGuards(AuthGuard())
+  @UseInterceptors(FileInterceptor('file'))
+  async updatePassword(
+    @Body() updatePasswordDto: UpdateAuthDto,
+    @Req() request: any,
+    @Res() response: Response,
+  ) {
+    const token = request.cookies.jwt;
+    const userData = await this.authService.updatePassword(
+      token,
+      updatePasswordDto,
+    );
+    return response.status(200).json({
+      message: 'Password updated successfully',
+      user: userData,
     });
   }
 }

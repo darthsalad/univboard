@@ -9,6 +9,7 @@ import { User, UserDocument } from 'schema/users.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -82,8 +83,19 @@ export class AuthService {
     return users;
   }
 
-  update(id: number) {
-    return `This action updates a #${id} auth`;
+  async updatePassword(
+    token: string,
+    updateAuthDto: UpdateAuthDto,
+  ): Promise<{ message: string; user: User }> {
+    const hashedPassword = await bcrypt.hash(updateAuthDto.password, 10);
+    const id = await this.jwtService.verify(token).id;
+    const user = await this.userModel.findByIdAndUpdate(id, {
+      password: hashedPassword,
+    });
+    return {
+      message: 'Password updated successfully',
+      user,
+    };
   }
 
   remove(id: number) {
