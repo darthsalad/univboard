@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { ClipDocument } from './clips.schema';
 
 export type UserDocument = User & Document;
 
@@ -18,7 +19,7 @@ export class User {
   createdOn: Date;
 
   @Prop({ default: [] })
-  clips: string[];
+  clips: ClipDocument[];
 
   @Prop({ default: '' })
   resetPasswordToken: string;

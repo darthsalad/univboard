@@ -85,11 +85,12 @@ export class AuthController {
     @Req() request: any,
     @Res() response: Response,
   ) {
-    const token = request.cookies.jwt;
+    const uid = request.user._id.toString();
     const userData = await this.authService.updatePassword(
-      token,
+      uid,
       updatePasswordDto,
     );
+    console.log(request.user);
     return response.status(200).json({
       message: 'Password updated successfully',
       user: userData,

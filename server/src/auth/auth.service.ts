@@ -75,7 +75,7 @@ export class AuthService {
     };
   }
 
-  async findAll(): Promise<any> {
+  async findAll(): Promise<User[]> {
     const users = await this.userModel.find();
     if (!users) {
       throw new NotFoundException('No users found');
@@ -84,12 +84,11 @@ export class AuthService {
   }
 
   async updatePassword(
-    token: string,
+    uid: string,
     updateAuthDto: UpdateAuthDto,
   ): Promise<{ message: string; user: User }> {
     const hashedPassword = await bcrypt.hash(updateAuthDto.password, 10);
-    const id = await this.jwtService.verify(token).id;
-    const user = await this.userModel.findByIdAndUpdate(id, {
+    const user = await this.userModel.findByIdAndUpdate(uid, {
       password: hashedPassword,
     });
     return {

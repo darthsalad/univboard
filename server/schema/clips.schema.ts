@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export type ClipDocument = Clip & Document;
 
@@ -15,7 +15,7 @@ export class Clip {
   createdOn: Date;
 
   @Prop({ required: true })
-  owner: string;
+  owner: mongoose.Types.ObjectId;
 
   @Prop()
   labels: string[];
