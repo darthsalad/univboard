@@ -131,6 +131,78 @@ export class ClipsService {
     };
   }
 
+  async getCollaborators(
+    uid: string,
+    cid: string,
+  ): Promise<{ message: string; collaborators: User[] }> {
+    const user = await this.userModel.findById(uid);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const clip = user.clips.find((clip) => clip._id == cid);
+    if (!clip) {
+      throw new NotFoundException('Clip not found');
+    }
+    const collaborators = [];
+    await Promise.all(
+      clip.collaborators.map(async (collaborator) => {
+        const collaboratorDocument = await this.userModel.findById(
+          collaborator,
+        );
+        if (!collaboratorDocument) {
+          throw new NotFoundException('Collaborator not found');
+        }
+        collaborators.push({
+          _id: collaboratorDocument._id,
+          name: collaboratorDocument.name,
+          email: collaboratorDocument.email,
+          createdOn: collaboratorDocument.createdOn,
+        });
+      }),
+    );
+    return {
+      message: `Collaborators of clip of id ${cid}.`,
+      collaborators: collaborators,
+    };
+  }
+
+  async removeCollaborator(
+    uid: string,
+    cid: string,
+    collaboratorId: string,
+  ): Promise<{ message: string; newClip: Clip }> {
+    const user = await this.userModel.findById(uid);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const clip = user.clips.find((clip) => clip._id == cid);
+    if (!clip) {
+      throw new NotFoundException('Clip not found');
+    }
+    const collaborator = await this.userModel.findById(collaboratorId);
+    if (!collaborator) {
+      throw new NotFoundException('Collaborator not found');
+    }
+    if (!clip.collaborators.includes(collaborator._id.toString())) {
+      throw new NotFoundException('Collaborator not found');
+    }
+
+    clip.collaborators = clip.collaborators.filter(
+      (collaborator) => collaborator != collaboratorId,
+    );
+    user.markModified('clips');
+    await user.save();
+
+    collaborator.clips = collaborator.clips.filter((clip) => clip._id != cid);
+    collaborator.markModified('clips');
+    await collaborator.save();
+
+    return {
+      message: `Collaborator of id ${collaboratorId} removed from clip of id ${cid}.`,
+      newClip: clip,
+    };
+  }
+
   async deleteClip(uid: string, cid: string): Promise<{ message: string }> {
     const user = await this.userModel.findById(uid);
     if (!user) {

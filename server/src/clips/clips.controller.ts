@@ -75,7 +75,7 @@ export class ClipsController {
     });
   }
 
-  @Patch(':uid/:cid/addCollaborators')
+  @Patch(':uid/:cid/add-collaborators')
   @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
   async addCollaborators(
@@ -88,6 +88,39 @@ export class ClipsController {
       uid,
       cid,
       request.body.collaborators,
+    );
+    return response.status(200).json({
+      message: res.message,
+      newClip: res.newClip,
+    });
+  }
+
+  @Get(':uid/:cid/get-collaborators')
+  @UseGuards(AuthGuard())
+  async getCollaborators(
+    @Param('uid') uid: string,
+    @Param('cid') cid: string,
+    @Res() response: Response,
+  ) {
+    const collaboarators = await this.clipsService.getCollaborators(uid, cid);
+    return response.status(200).json({
+      message: collaboarators.message,
+      collaborators: collaboarators.collaborators,
+    });
+  }
+
+  @Delete(':uid/:cid/remove-collaborator')
+  @UseGuards(AuthGuard())
+  async removeCollaborator(
+    @Param('uid') uid: string,
+    @Param('cid') cid: string,
+    @Req() request: any,
+    @Res() response: Response,
+  ) {
+    const res = await this.clipsService.removeCollaborator(
+      uid,
+      cid,
+      request.body.collaborator,
     );
     return response.status(200).json({
       message: res.message,
