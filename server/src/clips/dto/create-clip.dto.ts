@@ -21,6 +21,9 @@ export class CreateClipDto {
   @IsDate()
   createdOn: Date = new Date();
 
+  @IsDate()
+  modifiedOn: Date = new Date();
+
   @IsEmpty()
   owner: mongoose.Types.ObjectId;
 

@@ -15,6 +15,9 @@ export class Clip {
   createdOn: Date;
 
   @Prop({ required: true })
+  modifiedOn: Date;
+
+  @Prop({ required: true })
   owner: mongoose.Types.ObjectId;
 
   @Prop()

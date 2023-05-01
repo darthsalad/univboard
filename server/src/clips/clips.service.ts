@@ -50,6 +50,8 @@ export class ClipsService {
     }
 
     createClipDto.owner = new mongoose.Types.ObjectId(uid) as any;
+    createClipDto.createdOn = new Date();
+    createClipDto.modifiedOn = new Date();
     const clip = new this.clipModel(createClipDto);
     user.clips.push(clip);
 
@@ -73,7 +75,7 @@ export class ClipsService {
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
-
+    updateClipDto.modifiedOn = new Date();
     Object.assign(clip, updateClipDto);
     user.markModified('clips');
     await user.save();
@@ -117,6 +119,7 @@ export class ClipsService {
     clip.collaborators.push(
       ...newCollaborators.map((collaborator) => collaborator._id.toString()),
     );
+    clip.modifiedOn = new Date();
     user.markModified('clips');
     await user.save();
 
@@ -190,6 +193,7 @@ export class ClipsService {
     clip.collaborators = clip.collaborators.filter(
       (collaborator) => collaborator != collaboratorId,
     );
+    clip.modifiedOn = new Date();
     user.markModified('clips');
     await user.save();
 
