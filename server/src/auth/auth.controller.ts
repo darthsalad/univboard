@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   UseGuards,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dto/register-auth.dto';
@@ -77,7 +78,7 @@ export class AuthController {
     });
   }
 
-  @Post('update-password')
+  @Patch('update-password')
   @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
   async updatePassword(
