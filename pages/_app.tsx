@@ -2,6 +2,7 @@ import Layout from "@/components/Layout/layout";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import "../styles/globals.css";
+import { MantineProvider } from "@mantine/core";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
@@ -13,15 +14,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 					name="description"
 					content="A universal note app with first class clipboard support."
 				/>
-        <link rel="icon" href="/favicon.ico" />
-        <meta property="og:title" content="Univboard" />
-        <meta property="og:description" content="A universal note app with first class clipboard support." />
-        <meta property="og:type" content="website" />
+				<link rel="icon" href="/favicon.ico" />
+				<meta property="og:title" content="Univboard" />
+				<meta
+					property="og:description"
+					content="A universal note app with first class clipboard support."
+				/>
+				<meta property="og:type" content="website" />
 				{/* <meta property="og:image" content="https://univboard.com/og-image.png" /> */}
 			</Head>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
+			<MantineProvider
+				theme={{ colorScheme: "dark" }}
+				withGlobalStyles
+				withNormalizeCSS
+			>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</MantineProvider>
 		</>
 	);
 }

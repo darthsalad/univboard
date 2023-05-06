@@ -223,4 +223,16 @@ export class ClipsService {
       message: `Clip of id ${cid} deleted.`,
     };
   }
+
+  // async deleteAllClips(uid: string): Promise<{ message: string }> {
+  //   const user = await this.userModel.findById(uid);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+  //   user.clips = [];
+  //   await user.save();
+  //   return {
+  //     message: `All clips deleted.`,
+  //   };
+  // }
 }
