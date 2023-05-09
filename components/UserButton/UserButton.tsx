@@ -8,10 +8,11 @@ import {
 	Menu,
 } from "@mantine/core";
 import {
+	IconBug,
 	IconChevronRight,
-	IconPhoto,
+	IconLogout,
+	IconMessageDots,
 	IconSettings,
-	IconTrash,
 } from "@tabler/icons-react";
 import { useStyles } from "./user-button.styles";
 
@@ -40,7 +41,6 @@ const UserButton = ({
 
 							<div style={{ flex: 1 }}>
 								<Text weight={500}>{name}</Text>
-
 								<Text color="dimmed" size="xs">
 									{email}
 								</Text>
@@ -52,10 +52,12 @@ const UserButton = ({
 				</Menu.Target>
 				<Menu.Dropdown>
 					<Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
-					<Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
-					<Menu.Item color="red" icon={<IconTrash size={14} />}>
-						Delete my account
+					<Menu.Item color="red" icon={<IconLogout size={14} />}>
+						Logout
 					</Menu.Item>
+						<Menu.Divider />
+					<Menu.Item icon={<IconMessageDots size={14} />}>Feedback</Menu.Item>
+					<Menu.Item icon={<IconBug size={14} />}>Report Bug</Menu.Item>
 				</Menu.Dropdown>
 			</Menu>
 		</div>

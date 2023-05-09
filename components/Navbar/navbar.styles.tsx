@@ -1,10 +1,14 @@
-import { createStyles, rem } from "@mantine/core";
+import { createStyles, px, rem } from "@mantine/core";
 
 export const useStyles = createStyles((theme) => ({
-	navbar: {
-		paddingTop: 0,
+	sidebar: {
+		transition: 'transform 0.3s ease-in-out',
+		transform: 'translateX(0)',
+		"@media (max-width: 768px)": {
+			transform: 'translateX(-100%)',
+		},
 	},
-
+	
 	section: {
 		marginLeft: `calc(${theme.spacing.md} * -1)`,
 		marginRight: `calc(${theme.spacing.md} * -1)`,
@@ -88,7 +92,6 @@ export const useStyles = createStyles((theme) => ({
 	collectionsHeader: {
 		paddingLeft: `calc(${theme.spacing.md} + ${rem(2)})`,
 		paddingRight: theme.spacing.md,
-		marginBottom: rem(5),
 	},
 
 	collectionLink: {
@@ -113,21 +116,14 @@ export const useStyles = createStyles((theme) => ({
 		},
 	},
 
-	header: {
-		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
-    height: "100%",
-	},
-
 	links: {
-		[theme.fn.smallerThan("xs")]: {
+		[theme.fn.smallerThan(px(768))]: {
 			display: "none",
 		},
 	},
 
 	burger: {
-		[theme.fn.largerThan("xs")]: {
+		[theme.fn.largerThan(px(768))]: {
 			display: "none",
 		},
 	},

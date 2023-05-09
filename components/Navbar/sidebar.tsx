@@ -7,7 +7,7 @@ import {
   Text,
   Group,
   ActionIcon,
-  Tooltip,
+  Tooltip
 } from '@mantine/core';
 import {
   IconSearch,
@@ -21,6 +21,7 @@ import {
 } from '@tabler/icons-react';
 import { useStyles } from '@/components/Navbar/navbar.styles';
 import UserButton from '../UserButton/UserButton';
+import { useNavbarStore } from '@/lib/zustand.store';
 
 const links = [
   { icon: IconNotes, label: 'All Notes', notifications: 3 },
@@ -30,11 +31,16 @@ const links = [
 ];
 
 const collections = [
-  { icon: IconArrowBadgeRight, label: 'All Notes' },
+  { icon: IconArrowBadgeRight, label: 'Work' },
+  { icon: IconArrowBadgeRight, label: 'Dev' },
+  { icon: IconArrowBadgeRight, label: 'Project A' },
 ];
 
 const Sidebar = () => {
   const { classes } = useStyles();
+  const { opened } = useNavbarStore((state) => ({
+    opened: state.opened,
+  }));
 
   const mainLinks = links.map((link) => (
     <UnstyledButton key={link.label} className={classes.mainLink}>
@@ -65,7 +71,14 @@ const Sidebar = () => {
   ));
 
   return (
-    <Navbar height='100%' width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <div>
+    <Navbar
+      height='100%'
+      width={{ sm: 300 }}
+      p="md"
+      id='sidebar-anim'
+      className={classes.sidebar}
+    >
       <Navbar.Section className={classes.section}>
         <UserButton
           image="https://i.imgur.com/fGxgcDF.png"
@@ -101,7 +114,8 @@ const Sidebar = () => {
         </Group>
         <div className={classes.collections}>{collectionLinks}</div>
       </Navbar.Section>
-    </Navbar>
+      </Navbar>
+      </div>
   );
 }
 

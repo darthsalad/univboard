@@ -3,8 +3,13 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import "../styles/globals.css";
 import { MantineProvider } from "@mantine/core";
+import { useThemeStore } from "@/lib/zustand.store";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+	const { theme } = useThemeStore((state) => ({
+		theme: state.theme,
+	}));
+
 	return (
 		<>
 			<Head>
@@ -24,7 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				{/* <meta property="og:image" content="https://univboard.com/og-image.png" /> */}
 			</Head>
 			<MantineProvider
-				theme={{ colorScheme: "dark" }}
+				theme={{ colorScheme: theme }}
 				withGlobalStyles
 				withNormalizeCSS
 			>
