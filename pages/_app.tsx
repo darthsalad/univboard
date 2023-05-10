@@ -29,7 +29,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				{/* <meta property="og:image" content="https://univboard.com/og-image.png" /> */}
 			</Head>
 			<MantineProvider
-				theme={{ colorScheme: theme }}
+				theme={{
+					fontFamily: "Poppins, sans-serif",
+					colorScheme: theme,
+				}}
 				withGlobalStyles
 				withNormalizeCSS
 			>

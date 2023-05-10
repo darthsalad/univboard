@@ -35,7 +35,7 @@ const AppHeader = () => {
 		<div>
 			<Header
 				height={60}
-				mb={120}
+				// mb={120}
 				p="xs"
 			>
 				<Group sx={{ height: "100%" }} px={20} position="apart">

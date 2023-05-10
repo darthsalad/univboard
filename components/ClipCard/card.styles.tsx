@@ -24,9 +24,6 @@ export const useStyles = createStyles((theme) => ({
 	},
 
 	pinIcon: {
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.black,
+		color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
 	},
 }));

@@ -1,13 +1,23 @@
 import { AppShell } from "@mantine/core";
 import Sidebar from "../Navbar/sidebar";
 import AppHeader from "../Navbar/header";
+import { useRouter } from "next/router";
+import { useStyles } from "./layout.styles";
 
 type LayoutProps = {
 	children: React.ReactNode;
 };
 
 const Layout = ({ children }: LayoutProps) => {
-	return (
+	const { classes } = useStyles();
+	const { pathname } = useRouter();
+
+	return pathname === "/auth/login" || pathname === "/auth/register" ? (
+		<div>
+			<AppHeader />
+			<main className={classes.authMain}>{children}</main>
+		</div>
+	) : (
 		<div>
 			<AppShell
 				padding="md"

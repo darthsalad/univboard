@@ -13,31 +13,31 @@ import {
 
 const iconOptions = [
 	{
-		icon: <IconUserPlus size={23} />,
+		icon: IconUserPlus,
 		func: () => {
 			console.log("clicked");
 		},
 	},
 	{
-		icon: <IconPalette size={23} />,
+		icon: IconPalette,
 		func: () => {
 			console.log("clicked");
 		},
 	},
 	{
-		icon: <IconTrash size={23} />,
+		icon: IconTrash,
 		func: () => {
 			console.log("clicked");
 		},
 	},
 	{
-		icon: <IconArchive size={23} />,
+		icon: IconArchive,
 		func: () => {
 			console.log("clicked");
 		},
 	},
 	{
-		icon: <IconDotsVertical size={23} />,
+		icon: IconDotsVertical,
 		func: () => {
 			console.log("clicked");
 		},
@@ -51,47 +51,49 @@ const ClipCard = () => {
 	return (
 		<div className={classes.cardContainer}>
 			<UnstyledButton>
-				<Card shadow="sm" radius="md" withBorder className={classes.card}>
-					<div>
-						<Group position="apart">
-							<Text size="lg" weight={500} style={{ marginBottom: 15 }}>
-								Card title
-							</Text>
-							<Group>
-								<IconUserPlus size={20} />
-								<ActionIcon
-									radius="xl"
-									onClick={() => {
-										setPinned(!pinned);
-										console.log(pinned);
-									}}
-								>
-									{pinned ? (
-										<IconPinnedFilled size={23} className={classes.pinIcon} />
-									) : (
-										<IconPinned size={23} className={classes.pinIcon} />
-									)}
-								</ActionIcon>
-							</Group>
-						</Group>
-					</div>
-					<div>
-						<Text size="sm" weight={400} style={{ marginBottom: 15 }}>
-							Card description
-						</Text>
-					</div>
-					<div>
-						<Group position="apart">
-							{iconOptions.map((item) => {
-								return (
-									<ActionIcon radius="xl" onClick={item.func}>
-										{item.icon}
+				<div>
+					<Card shadow="sm" radius="md" withBorder className={classes.card}>
+						<div>
+							<Group position="apart">
+								<Text size="lg" weight={500} style={{ marginBottom: 15 }}>
+									Card title
+								</Text>
+								<Group>
+									<IconUserPlus size={20} />
+									<ActionIcon
+										radius="xl"
+										onClick={() => {
+											setPinned(!pinned);
+											console.log(pinned);
+										}}
+									>
+										{pinned ? (
+											<IconPinnedFilled size={23} className={classes.pinIcon} />
+										) : (
+											<IconPinned size={23} className={classes.pinIcon} />
+										)}
 									</ActionIcon>
-								);
-							})}
-						</Group>
-					</div>
-				</Card>
+								</Group>
+							</Group>
+						</div>
+						<div>
+							<Text size="sm" weight={400} style={{ marginBottom: 15 }}>
+								Card description
+							</Text>
+						</div>
+						<div>
+							<Group position="apart">
+								{iconOptions.map((item) => {
+									return (
+										<ActionIcon radius="xl" onClick={item.func}>
+											<item.icon size={23} />
+										</ActionIcon>
+									);
+								})}
+							</Group>
+						</div>
+					</Card>
+				</div>
 			</UnstyledButton>
 		</div>
 	);
