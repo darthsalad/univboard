@@ -4,11 +4,16 @@ import Head from "next/head";
 import "../styles/globals.css";
 import { MantineProvider } from "@mantine/core";
 import { useThemeStore } from "@/lib/zustand.store";
+import { Suspense } from "react";
+import PageLoader from "@/components/Loader/Loader";
+import Protected from "@/utils/Protected";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	const { theme } = useThemeStore((state) => ({
 		theme: state.theme,
 	}));
+	const queryClient = new QueryClient();
 
 	return (
 		<>
@@ -34,11 +39,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 					colorScheme: theme,
 				}}
 				withGlobalStyles
-				withNormalizeCSS
+				// withNormalizeCSS
 			>
-				<Layout>
-					<Component {...pageProps} />
-				</Layout>
+				<QueryClientProvider client={queryClient}>
+					<Suspense fallback={<PageLoader />}>
+						<Protected>
+							<Layout>
+								<Component {...pageProps} />
+							</Layout>
+						</Protected>
+					</Suspense>
+				</QueryClientProvider>
 			</MantineProvider>
 		</>
 	);

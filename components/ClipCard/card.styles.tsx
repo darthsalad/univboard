@@ -17,6 +17,10 @@ export const useStyles = createStyles((theme) => ({
 		"@media (max-width: 923px)": {
 			width: "300px",
 		},
+		"@media (max-width: 671px)": {
+			width: "calc(100vw - 100px)",
+			margin: "auto",
+		}
 	},
 
 	cardContainer: {

@@ -107,7 +107,7 @@ const Register = () => {
 			redirect: "follow",
 		};
 
-		fetch("http://localhost:5000/auth/register", requestOptions)
+		fetch(`${baseURL}/auth/register`, requestOptions)
 			.then((response) => response.json())
 			.then((result) => console.log(result))
 			.catch((error) => console.log("error", error));

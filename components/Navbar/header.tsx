@@ -8,14 +8,21 @@ import {
 	Code,
 	useMantineTheme,
 	ActionIcon,
+	UnstyledButton,
 } from "@mantine/core";
 import { useStyles } from "./navbar.styles";
 import { useNavbarStore, useThemeStore } from "@/lib/zustand.store";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 const AppHeader = () => {
+	const router = useRouter();
 	const { classes } = useStyles();
 	const { colorScheme } = useMantineTheme();
+
+	const redirect = async (route: string) => {
+		router.push(`/${route}`);
+	};
 
 	const { themeToggle } = useThemeStore((state) => ({
 		themeToggle: state.toggle,
@@ -33,20 +40,26 @@ const AppHeader = () => {
 
 	return (
 		<div>
-			<Header
-				height={60}
-				// mb={120}
-				p="xs"
-			>
+			<Header height={60} p="xs">
 				<Group sx={{ height: "100%" }} px={20} position="apart">
-					<Text size="xl" weight={700}>
-						Univboard <Code>beta</Code>
-					</Text>
+					<UnstyledButton onClick={() => redirect('')}>
+						<Text size="xl" weight={700}>
+							Univboard <Code>beta</Code>
+						</Text>
+					</UnstyledButton>
 					<Group spacing={5} className={classes.links}>
-						<ActionIcon variant="default" onClick={() => themeToggle()} size={30}>
-              {colorScheme === 'dark' ? <IconSun size="1rem" /> : <IconMoonStars size="1rem" />}
-            </ActionIcon>
-						<Button variant="subtle" size="sm">
+						<ActionIcon
+							variant="default"
+							onClick={() => themeToggle()}
+							size={30}
+						>
+							{colorScheme === "dark" ? (
+								<IconSun size="1rem" />
+							) : (
+								<IconMoonStars size="1rem" />
+							)}
+						</ActionIcon>
+						<Button variant="subtle" size="sm" onClick={() => redirect('auth/login')}>
 							<Text size="sm" weight={500}>
 								Login
 							</Text>
@@ -55,7 +68,10 @@ const AppHeader = () => {
 
 					<Burger
 						opened={opened}
-						onClick={() => {toggle(); toggleClassname();}}
+						onClick={() => {
+							toggle();
+							toggleClassname();
+						}}
 						className={classes.burger}
 						size="sm"
 					/>

@@ -50,9 +50,9 @@ const ClipCard = () => {
 
 	return (
 		<div className={classes.cardContainer}>
-			<UnstyledButton>
-				<div>
-					<Card shadow="sm" radius="md" withBorder className={classes.card}>
+			<Card shadow="sm" radius="md" withBorder className={classes.card}>
+				<UnstyledButton>
+					<div>
 						<div>
 							<Group position="apart">
 								<Text size="lg" weight={500} style={{ marginBottom: 15 }}>
@@ -81,20 +81,20 @@ const ClipCard = () => {
 								Card description
 							</Text>
 						</div>
-						<div>
-							<Group position="apart">
-								{iconOptions.map((item) => {
-									return (
-										<ActionIcon radius="xl" onClick={item.func}>
-											<item.icon size={23} />
-										</ActionIcon>
-									);
-								})}
-							</Group>
-						</div>
-					</Card>
+					</div>
+				</UnstyledButton>
+				<div>
+					{/* <Group position="apart">
+						{iconOptions.map((item, index) => {
+							return (
+								<ActionIcon radius="xl" onClick={item.func} key={index}>
+									<item.icon size={23} />
+								</ActionIcon>
+							);
+						})}
+					</Group> */}
 				</div>
-			</UnstyledButton>
+			</Card>
 		</div>
 	);
 };

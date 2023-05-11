@@ -42,7 +42,7 @@ const UserButton = ({
 							<div style={{ flex: 1 }}>
 								<Text weight={500}>{name}</Text>
 								<Text color="dimmed" size="xs">
-									{email}
+									{email.length > 21 ? email.slice(0, 21) + "..." : email}
 								</Text>
 							</div>
 

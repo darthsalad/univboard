@@ -13,6 +13,8 @@ import {
 import { useRouter } from "next/router";
 import React from "react";
 
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = React.useState("");
@@ -33,7 +35,7 @@ const Login = () => {
 			redirect: "follow",
 		};
 
-		fetch("http://localhost:5000/auth/login", requestOptions)
+		fetch(`${baseURL}/auth/login`, requestOptions)
 			.then((response) => response.json())
 			.then((result) => console.log(result))
 			.catch((error) => console.log("error", error));
