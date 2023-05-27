@@ -16,8 +16,11 @@ async function bootstrap() {
     next();
   });
   app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
+    allowedHeaders:
+      'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
   await app.listen(5000);
 }

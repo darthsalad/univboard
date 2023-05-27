@@ -14,15 +14,26 @@ import { useStyles } from "./navbar.styles";
 import { useNavbarStore, useThemeStore } from "@/lib/zustand.store";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+import { useAuthStore } from "@/lib/zustand.store";
 
 const AppHeader = () => {
 	const router = useRouter();
+	const { isLoggedIn, logout } = useAuthStore((state) => ({
+		isLoggedIn: state.isLoggedIn,
+		logout: state.logout,
+	}));
 	const { classes } = useStyles();
 	const { colorScheme } = useMantineTheme();
 
 	const redirect = async (route: string) => {
 		router.push(`/${route}`);
 	};
+
+	const logoutUser = async () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("user");
+		logout();
+	}
 
 	const { themeToggle } = useThemeStore((state) => ({
 		themeToggle: state.toggle,
@@ -42,7 +53,7 @@ const AppHeader = () => {
 		<div>
 			<Header height={60} p="xs">
 				<Group sx={{ height: "100%" }} px={20} position="apart">
-					<UnstyledButton onClick={() => redirect('')}>
+					<UnstyledButton onClick={() => redirect("")}>
 						<Text size="xl" weight={700}>
 							Univboard <Code>beta</Code>
 						</Text>
@@ -59,11 +70,23 @@ const AppHeader = () => {
 								<IconMoonStars size="1rem" />
 							)}
 						</ActionIcon>
-						<Button variant="subtle" size="sm" onClick={() => redirect('auth/login')}>
-							<Text size="sm" weight={500}>
-								Login
-							</Text>
-						</Button>
+						{isLoggedIn ? (
+							<Button variant="subtle" size="sm" onClick={() => logoutUser()}>
+								<Text size="sm" weight={500}>
+									Logout
+								</Text>
+							</Button>
+						) : (
+							<Button
+								variant="subtle"
+								size="sm"
+								onClick={() => redirect("auth/login")}
+							>
+								<Text size="sm" weight={500}>
+									Login
+								</Text>
+							</Button>
+						)}
 					</Group>
 
 					<Burger

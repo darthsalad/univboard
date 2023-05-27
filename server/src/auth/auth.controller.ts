@@ -15,7 +15,7 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -51,6 +51,10 @@ export class AuthController {
       .status(200)
       .cookie('jwt', userData.token, {
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 2592000000,
+        path: '/',
       })
       .json({
         message: 'User logged in successfully',
@@ -60,7 +64,7 @@ export class AuthController {
   }
 
   @Get()
-  async authStatus(@Req() request: any, @Res() response: Response) {
+  async authStatus(@Req() request: Request, @Res() response: Response) {
     const token = request.cookies.jwt;
     const res = await this.authService.authStatus(token);
     return response.status(200).json({
