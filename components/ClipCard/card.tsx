@@ -44,9 +44,31 @@ const iconOptions = [
 	},
 ];
 
-const ClipCard = () => {
+interface CardProps {
+	title: string;
+	text: string;
+	labels: string[];
+	owner: string;
+	collaborators: string[];
+	id: string;
+	pinned: boolean;
+	createdOn: string;
+	modifiedOn: string;
+}
+
+const ClipCard = ({
+	title,
+	text,
+	labels,
+	owner,
+	collaborators,
+	id,
+	pinned,
+	createdOn,
+	modifiedOn,
+}: CardProps) => {
 	const { classes } = useStyles();
-	const [pinned, setPinned] = React.useState(false);
+	const [pin, setPin] = React.useState(false);
 
 	return (
 		<div className={classes.cardContainer}>
@@ -55,36 +77,54 @@ const ClipCard = () => {
 					<div>
 						<div>
 							<Group position="apart">
-								<Text size="lg" weight={500} style={{ marginBottom: 15 }}>
-									Card title
-								</Text>
-								<Group>
-									<IconUserPlus size={20} />
-									<ActionIcon
-										radius="xl"
-										onClick={() => {
-											setPinned(!pinned);
-											console.log(pinned);
-										}}
-									>
-										{pinned ? (
-											<IconPinnedFilled size={23} className={classes.pinIcon} />
-										) : (
-											<IconPinned size={23} className={classes.pinIcon} />
-										)}
-									</ActionIcon>
-								</Group>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Text size="lg" weight={500} style={{ margin: "10px auto" }}>
+										{title.length > 15
+											? title.substring(0, 15) + "..."
+											: title
+											? title
+											: ""}
+									</Text>
+								</div>
+								<div className={classes.iconGroup}>
+									<Group position="right">
+										<IconUserPlus size={20} />
+										<ActionIcon
+											radius="xl"
+											onClick={() => {
+												setPin(!pin);
+												console.log(pin);
+											}}
+										>
+											{pinned ? (
+												<IconPinnedFilled
+													size={23}
+													className={classes.pinIcon}
+												/>
+											) : (
+												<IconPinned size={23} className={classes.pinIcon} />
+											)}
+										</ActionIcon>
+									</Group>
+								</div>
 							</Group>
 						</div>
+
 						<div>
 							<Text size="sm" weight={400} style={{ marginBottom: 15 }}>
-								Card description
+								{text}
 							</Text>
 						</div>
 					</div>
 				</UnstyledButton>
 				<div>
-					{/* <Group position="apart">
+					<Group position="apart">
 						{iconOptions.map((item, index) => {
 							return (
 								<ActionIcon radius="xl" onClick={item.func} key={index}>
@@ -92,7 +132,7 @@ const ClipCard = () => {
 								</ActionIcon>
 							);
 						})}
-					</Group> */}
+					</Group>
 				</div>
 			</Card>
 		</div>

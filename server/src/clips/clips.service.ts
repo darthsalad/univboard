@@ -52,6 +52,7 @@ export class ClipsService {
     createClipDto.owner = new mongoose.Types.ObjectId(uid) as any;
     createClipDto.createdOn = new Date();
     createClipDto.modifiedOn = new Date();
+    createClipDto.pinned = false;
     const clip = new this.clipModel(createClipDto);
     user.clips.push(clip);
 

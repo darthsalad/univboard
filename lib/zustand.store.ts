@@ -4,7 +4,8 @@ type AuthState = {
 	isLoggedIn: boolean;
 	token: string;
 	user: any | null;
-	setUser: (user: any, token: string) => void;
+	setToken: (token: string) => void;
+	setUser: (user: any) => void;
 	logout: () => void;
 };
 
@@ -22,8 +23,12 @@ export const useAuthStore = create<AuthState>((set) => ({
 	isLoggedIn: false,
 	token: "",
 	user: null,
-	setUser: (user, token) =>
-		set(() => ({ isLoggedIn: true, user, token: token })),
+	setToken: (newToken) =>
+		set(() => ({
+			token: newToken,
+			isLoggedIn: true,
+		})),
+	setUser: (user) => set(() => ({ user })),
 	logout: () =>
 		set(() => {
 			fetch("http://localhost:5000/auth/logout", {

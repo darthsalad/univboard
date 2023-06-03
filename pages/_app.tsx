@@ -43,16 +43,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				}}
 				withGlobalStyles
 			>
-				<QueryClientProvider client={queryClient}>
-					<Suspense fallback={<PageLoader />}>
+				<Suspense fallback={<PageLoader />}>
+					<QueryClientProvider client={queryClient}>
 						<Protected>
 							<Layout>
 								<Component {...pageProps} />
 							</Layout>
 							<Notifications />
 						</Protected>
-					</Suspense>
-				</QueryClientProvider>
+					</QueryClientProvider>
+				</Suspense>
 			</MantineProvider>
 		</>
 	);

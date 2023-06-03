@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { baseURL } from "@/pages/_app";
 import IsUser from "@/utils/IsUser";
+import useNotifications from "@/utils/useNotifications";
 
 const requirements = [
 	{ re: /[0-9]/, label: "Includes number" },
@@ -110,7 +111,13 @@ const Register = () => {
 
 		fetch(`${baseURL}/auth/register`, requestOptions)
 			.then((response) => response.json())
-			.then((result) => console.log(result))
+			.then((result) => {
+				useNotifications({
+					title: "User Registered!",
+					message: "Please check your email to verify your account and login.",
+					color: "lime",
+				});
+			})
 			.catch((error) => console.log("error", error));
 	};
 

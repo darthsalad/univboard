@@ -59,7 +59,6 @@ export class AuthController {
       .json({
         message: 'User logged in successfully',
         token: userData.token,
-        user: userData.user,
       });
   }
 
@@ -68,14 +67,15 @@ export class AuthController {
     const token = request.cookies.jwt;
     const res = await this.authService.authStatus(token);
     return response.status(200).json({
-      // jwtToken: token,
       id: res.user._id,
       email: res.user.email,
+      name: res.user.name,
+      date: res.user.createdOn,
     });
   }
 
   @Get('logout')
-  async logout(@Res({ passthrough: true }) response: Response) {
+  logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('jwt');
     return response.status(200).json({
       message: 'User logged out successfully',

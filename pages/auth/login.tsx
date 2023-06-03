@@ -19,8 +19,8 @@ import useNotifications from "@/utils/useNotifications";
 
 const Login = () => {
 	const router = useRouter();
-	const { setUser } = useAuthStore((state) => ({
-		setUser: state.setUser,
+	const { setToken } = useAuthStore((state) => ({
+		setToken: state.setToken,
 	}));
 	const [email, setEmail] = React.useState("piyushmishra965@gmail.com");
 	const [pass, setPass] = React.useState("123456789");
@@ -46,16 +46,13 @@ const Login = () => {
 			.then((result) => {
 				console.log(result);
 				if (result.token || result.user) {
-					setUser(result.user, result.token);
+					setToken(result.token);
 					localStorage.setItem("token", result.token);
 					useNotifications({
 						title: "Login Successful",
 						message: "You have been logged in successfully",
 						color: "lime",
-					})
-					// setTimeout(() => {
-					// 	router.push("/");
-					// }, 3000);
+					});
 					router.push("/");
 				}
 			})

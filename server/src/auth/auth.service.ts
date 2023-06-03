@@ -40,7 +40,7 @@ export class AuthService {
 
   async login(
     loginDto: LoginAuthDto,
-  ): Promise<{ message: string; token: string; user: User }> {
+  ): Promise<{ message: string; token: string }> {
     const user = await this.userModel.findOne({ email: loginDto.email });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -56,8 +56,7 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
     return {
       message: 'User logged in successfully',
-      token,
-      user,
+      token: token,
     };
   }
 
