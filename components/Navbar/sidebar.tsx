@@ -21,7 +21,7 @@ import {
 } from '@tabler/icons-react';
 import { useStyles } from '@/components/Navbar/navbar.styles';
 import UserButton from '../UserButton/UserButton';
-import { useNavbarStore } from '@/lib/zustand.store';
+import { useAuthStore, useNavbarStore } from '@/lib/zustand.store';
 
 const links = [
   { icon: IconNotes, label: 'All Notes', notifications: 3 },
@@ -38,6 +38,9 @@ const collections = [
 
 const Sidebar = () => {
   const { classes } = useStyles();
+  const { user } = useAuthStore((state) => ({
+    user: state.user,
+  }));
   const { opened } = useNavbarStore((state) => ({
     opened: state.opened,
   }));
@@ -82,8 +85,8 @@ const Sidebar = () => {
       <Navbar.Section className={classes.section}>
         <UserButton
           image="https://i.imgur.com/fGxgcDF.png"
-          name="Piyush Mishra"
-          email="piyushmishra965@gmail.com"
+          name={user.name}
+          email={user.email}
           icon={<IconSelector size="0.9rem" stroke={1.5} />}
         />
       </Navbar.Section>

@@ -12,16 +12,11 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAuthStore } from "@/lib/zustand.store";
 import { baseURL } from "@/pages/_app";
-import IsUser from "@/utils/IsUser";
 import useNotifications from "@/utils/useNotifications";
 
 const Login = () => {
 	const router = useRouter();
-	const { setToken } = useAuthStore((state) => ({
-		setToken: state.setToken,
-	}));
 	const [email, setEmail] = React.useState("piyushmishra965@gmail.com");
 	const [pass, setPass] = React.useState("123456789");
 
@@ -46,66 +41,62 @@ const Login = () => {
 			.then((result) => {
 				console.log(result);
 				if (result.token || result.user) {
-					setToken(result.token);
 					localStorage.setItem("token", result.token);
 					useNotifications({
 						title: "Login Successful",
 						message: "You have been logged in successfully",
 						color: "lime",
 					});
-					router.push("/");
+					window.location.href = "/";
 				}
 			})
 			.catch((error) => console.log("error", error));
 	};
 
 	return (
-		<IsUser>
-			<Container size={420} my={40}>
-				<Title
-					align="center"
-					sx={(theme) => ({
-						fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-						fontWeight: 900,
-					})}
-				>
-					Welcome back!
-				</Title>
-				<Text color="dimmed" size="sm" align="center" mt={5}>
-					Do not have an account yet?{" "}
-					<Anchor size="sm" component="button" type="button" onClick={redirect}>
-						Create account
-					</Anchor>
-				</Text>
+		<Container size={420} my={40}>
+			<Title
+				align="center"
+				sx={(theme) => ({
+					fontWeight: 900,
+				})}
+			>
+				Welcome back!
+			</Title>
+			<Text color="dimmed" size="sm" align="center" mt={5}>
+				Do not have an account yet?{" "}
+				<Anchor size="sm" component="button" type="button" onClick={redirect}>
+					Create account
+				</Anchor>
+			</Text>
 
-				<Paper withBorder shadow="md" p={30} mt={30} radius="md">
-					<TextInput
-						value={email}
-						label="Email"
-						placeholder="youremail@domain.com"
-						required
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-					<PasswordInput
-						value={pass}
-						label="Password"
-						placeholder="Your password"
-						required
-						mt="md"
-						onChange={(e) => setPass(e.target.value)}
-					/>
-					<Group position="apart" mt="lg">
-						<Checkbox label="Remember me" />
-						<Anchor component="button" size="sm">
-							Forgot password?
-						</Anchor>
-					</Group>
-					<Button fullWidth mt="xl" onClick={handleSubmit}>
-						Sign in
-					</Button>
-				</Paper>
-			</Container>
-		</IsUser>
+			<Paper withBorder shadow="md" p={30} mt={30} radius="md">
+				<TextInput
+					value={email}
+					label="Email"
+					placeholder="youremail@domain.com"
+					required
+					onChange={(e) => setEmail(e.target.value)}
+				/>
+				<PasswordInput
+					value={pass}
+					label="Password"
+					placeholder="Your password"
+					required
+					mt="md"
+					onChange={(e) => setPass(e.target.value)}
+				/>
+				<Group position="apart" mt="lg">
+					<Checkbox label="Remember me" />
+					<Anchor component="button" size="sm">
+						Forgot password?
+					</Anchor>
+				</Group>
+				<Button fullWidth mt="xl" onClick={handleSubmit}>
+					Sign in
+				</Button>
+			</Paper>
+		</Container>
 	);
 };
 

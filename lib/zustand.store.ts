@@ -2,9 +2,7 @@ import { create } from "zustand";
 
 type AuthState = {
 	isLoggedIn: boolean;
-	token: string;
 	user: any | null;
-	setToken: (token: string) => void;
 	setUser: (user: any) => void;
 	logout: () => void;
 };
@@ -21,14 +19,8 @@ type ThemeState = {
 
 export const useAuthStore = create<AuthState>((set) => ({
 	isLoggedIn: false,
-	token: "",
 	user: null,
-	setToken: (newToken) =>
-		set(() => ({
-			token: newToken,
-			isLoggedIn: true,
-		})),
-	setUser: (user) => set(() => ({ user })),
+	setUser: (userObject) => set(() => ({ user: userObject, isLoggedIn: true })),
 	logout: () =>
 		set(() => {
 			fetch("http://localhost:5000/auth/logout", {

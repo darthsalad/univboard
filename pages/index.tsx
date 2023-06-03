@@ -2,9 +2,10 @@ import ClipCard from "@/components/ClipCard/card";
 import { useQuery } from "@tanstack/react-query";
 import { baseURL } from "./_app";
 import { FC } from "react";
-import { Code, Text } from "@mantine/core";
-import PageLoader from "@/components/Loader/Loader";
+import { Button, Code, Text } from "@mantine/core";
+import PageLoader from "@/components/Loader/PageLoader";
 import { useAuthStore } from "@/lib/zustand.store";
+import React from "react";
 
 export interface ClipInterface {
 	_id: string;
@@ -23,10 +24,10 @@ interface FetchClipsResponse {
 }
 
 const Home: FC = () => {
-	const { user, isLoggedIn } = useAuthStore((state) => ({
+	const { user } = useAuthStore((state) => ({
 		user: state.user,
-		isLoggedIn: state.isLoggedIn,
 	}));
+
 	const { data, isLoading, error } = useQuery<FetchClipsResponse>(
 		["clips"],
 		() =>

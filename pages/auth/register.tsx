@@ -16,7 +16,6 @@ import {
 import { useRouter } from "next/router";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { baseURL } from "@/pages/_app";
-import IsUser from "@/utils/IsUser";
 import useNotifications from "@/utils/useNotifications";
 
 const requirements = [
@@ -122,77 +121,70 @@ const Register = () => {
 	};
 
 	return (
-		<IsUser>
-			<div>
-				<Container size={420} my={40}>
-					<Title align="center">Create an account!</Title>
-					<Text color="dimmed" size="sm" align="center" mt={5}>
-						Already have an account?{" "}
-						<Anchor
-							size="sm"
-							component="button"
-							type="button"
-							onClick={redirect}
-						>
-							Sign in
-						</Anchor>
-					</Text>
+		<div>
+			<Container size={420} my={40}>
+				<Title align="center">Create an account!</Title>
+				<Text color="dimmed" size="sm" align="center" mt={5}>
+					Already have an account?{" "}
+					<Anchor size="sm" component="button" type="button" onClick={redirect}>
+						Sign in
+					</Anchor>
+				</Text>
 
-					<Paper withBorder shadow="md" p={30} mt={30} radius="md">
-						<TextInput
-							label="Name"
-							placeholder="Your Name"
-							required
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-						/>
-						<TextInput
-							label="Email"
-							placeholder="youremail@domain.com"
-							required
-							mt="md"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-						/>
-						<PasswordInput
-							value={pass}
-							onChange={(e) => setPass(e.target.value)}
-							placeholder="Your password"
-							label="Password"
-							required
-							mt="md"
-						/>
-						<PasswordInput
-							label="Confirm Password"
-							placeholder="Confirm your password"
-							required
-							mt="md"
-							value={confirmPass}
-							onChange={(e) => {
-								setConfirmPass(e.target.value);
-								e.target.value === pass && strength > 80
-									? setCheck(true)
-									: setCheck(false);
-							}}
-						/>
+				<Paper withBorder shadow="md" p={30} mt={30} radius="md">
+					<TextInput
+						label="Name"
+						placeholder="Your Name"
+						required
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+					<TextInput
+						label="Email"
+						placeholder="youremail@domain.com"
+						required
+						mt="md"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+					/>
+					<PasswordInput
+						value={pass}
+						onChange={(e) => setPass(e.target.value)}
+						placeholder="Your password"
+						label="Password"
+						required
+						mt="md"
+					/>
+					<PasswordInput
+						label="Confirm Password"
+						placeholder="Confirm your password"
+						required
+						mt="md"
+						value={confirmPass}
+						onChange={(e) => {
+							setConfirmPass(e.target.value);
+							e.target.value === pass && strength > 80
+								? setCheck(true)
+								: setCheck(false);
+						}}
+					/>
 
-						<Group spacing={5} grow mt="md" mb="md">
-							{bars}
-						</Group>
+					<Group spacing={5} grow mt="md" mb="md">
+						{bars}
+					</Group>
 
-						<PasswordRequirement
-							meets={pass.length > 7}
-							label="Minimum 8 characters"
-						/>
-						{checks}
+					<PasswordRequirement
+						meets={pass.length > 7}
+						label="Minimum 8 characters"
+					/>
+					{checks}
 
-						<Button fullWidth mt="xl" disabled={!check} onClick={handleSubmit}>
-							Register
-						</Button>
-					</Paper>
-				</Container>
-			</div>
-		</IsUser>
+					<Button fullWidth mt="xl" disabled={!check} onClick={handleSubmit}>
+						Register
+					</Button>
+				</Paper>
+			</Container>
+		</div>
 	);
 };
 

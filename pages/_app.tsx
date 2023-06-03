@@ -6,9 +6,9 @@ import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useThemeStore } from "@/lib/zustand.store";
 import { Suspense } from "react";
-import PageLoader from "@/components/Loader/Loader";
-import Protected from "@/utils/Protected";
+import PageLoader from "@/components/Loader/PageLoader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Protected from "@/utils/Protected";
 
 export const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -36,24 +36,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<meta property="og:type" content="website" />
 				{/* <meta property="og:image" content="https://univboard.com/og-image.png" /> */}
 			</Head>
-			<MantineProvider
-				theme={{
-					fontFamily: "Poppins, sans-serif",
-					colorScheme: theme,
-				}}
-				withGlobalStyles
-			>
-				<Suspense fallback={<PageLoader />}>
+			<Suspense fallback={<PageLoader />}>
+				<MantineProvider
+					theme={{
+						fontFamily: "Poppins, sans-serif",
+						colorScheme: theme,
+					}}
+					withGlobalStyles
+				>
 					<QueryClientProvider client={queryClient}>
 						<Protected>
-							<Layout>
-								<Component {...pageProps} />
-							</Layout>
-							<Notifications />
+						<Layout>
+							<Component {...pageProps} />
+						</Layout>
+						<Notifications />
 						</Protected>
 					</QueryClientProvider>
-				</Suspense>
-			</MantineProvider>
+				</MantineProvider>
+			</Suspense>
 		</>
 	);
 }
