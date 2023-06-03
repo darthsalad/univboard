@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Text, Group, ActionIcon, UnstyledButton } from "@mantine/core";
+import { Card, Text, Group, ActionIcon, Modal } from "@mantine/core";
 import { useStyles } from "./card.styles";
 import {
 	IconArchive,
@@ -10,6 +10,8 @@ import {
 	IconTrash,
 	IconUserPlus,
 } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import CardModal from "./modal";
 
 const iconOptions = [
 	{
@@ -69,60 +71,93 @@ const ClipCard = ({
 }: CardProps) => {
 	const { classes } = useStyles();
 	const [pin, setPin] = React.useState(false);
+	const pinRef = React.useRef<HTMLButtonElement>(null);
+	const [opened, { open, close }] = useDisclosure(false);
+
+	React.useEffect(() => {
+		document
+			.getElementById(`card-${id}`)!
+			.addEventListener("mouseenter", () => {
+				pinRef.current!.style.display = "block";
+			});
+		document
+			.getElementById(`card-${id}`)!
+			.addEventListener("mouseleave", () => {
+				pinRef.current!.style.display = "none";
+			});
+
+		return () => {
+			document
+				.getElementById(`card-${id}`)!
+				.removeEventListener("mouseenter", () => {
+					pinRef.current!.style.display = "block";
+				});
+			document
+				.getElementById(`card-${id}`)!
+				.removeEventListener("mouseleave", () => {
+					pinRef.current!.style.display = "none";
+				});
+		};
+	}, []);
 
 	return (
 		<div className={classes.cardContainer}>
-			<Card shadow="sm" radius="md" withBorder className={classes.card}>
-				<UnstyledButton>
+			<Card
+				shadow="sm"
+				radius="md"
+				withBorder
+				className={classes.card}
+				id={`card-${id}`}
+				onClick={open}
+			>
+				<div>
 					<div>
-						<div>
-							<Group position="apart">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
-									<Text size="lg" weight={500} style={{ margin: "10px auto" }}>
-										{title.length > 15
-											? title.substring(0, 15) + "..."
-											: title
-											? title
-											: ""}
-									</Text>
-								</div>
-								<div className={classes.iconGroup}>
-									<Group position="right">
-										<IconUserPlus size={20} />
-										<ActionIcon
-											radius="xl"
-											onClick={() => {
-												setPin(!pin);
-												console.log(pin);
-											}}
-										>
-											{pinned ? (
-												<IconPinnedFilled
-													size={23}
-													className={classes.pinIcon}
-												/>
-											) : (
-												<IconPinned size={23} className={classes.pinIcon} />
-											)}
-										</ActionIcon>
-									</Group>
-								</div>
-							</Group>
-						</div>
-
-						<div>
-							<Text size="sm" weight={400} style={{ marginBottom: 15 }}>
-								{text}
-							</Text>
-						</div>
+						<Group position="apart">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+								}}
+							>
+								<Text size="lg" weight={500} style={{ margin: "10px auto" }}>
+									{title.length > 15
+										? title.substring(0, 15) + "..."
+										: title
+										? title
+										: ""}
+								</Text>
+							</div>
+							<div>
+								<Group position="right">
+									{/* <IconUserPlus size={20} /> */}
+									<ActionIcon
+										radius="xl"
+										className={classes.iconGroup}
+										onClick={(e) => {
+											e.stopPropagation();
+											setPin(!pin);
+											console.log(pin);
+										}}
+										ref={pinRef}
+									>
+										{pin ? (
+											<IconPinnedFilled size={23} className={classes.pinIcon} />
+										) : (
+											<IconPinned size={23} className={classes.pinIcon} />
+										)}
+									</ActionIcon>
+								</Group>
+							</div>
+						</Group>
 					</div>
-				</UnstyledButton>
+
+					<div>
+						<Text size="sm" weight={400} style={{ marginBottom: 15 }}>
+							{text}
+						</Text>
+					</div>
+				</div>
 				<div>
 					<Group position="apart">
 						{iconOptions.map((item, index) => {
@@ -135,6 +170,19 @@ const ClipCard = ({
 					</Group>
 				</div>
 			</Card>
+			<Modal opened={opened} onClose={close} title="Clip Editing Modal">
+				<CardModal
+					title={title}
+					text={text}
+					labels={labels}
+					owner={owner}
+					collaborators={collaborators}
+					id={id}
+					pinned={pinned}
+					createdOn={createdOn}
+					modifiedOn={modifiedOn}
+				/>
+			</Modal>
 		</div>
 	);
 };

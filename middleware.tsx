@@ -33,13 +33,11 @@ export async function middleware(request: NextRequest) {
 				return res;
 			}
 		}
-	}
-
-	if (request.nextUrl.pathname.includes("/auth")) {
+	} else {
 		const token = request.cookies.get("jwt");
 
 		if (token) {
-			const res = NextResponse.redirect("/");
+			const res = NextResponse.redirect(new URL("/", request.url));
 			return res;
 		}
 
@@ -47,6 +45,6 @@ export async function middleware(request: NextRequest) {
 	}
 }
 
-export const config = {
-	matcher: "/",
-};
+// export const config = {
+// 	matcher: "/",
+// };

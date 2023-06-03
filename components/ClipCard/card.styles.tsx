@@ -33,8 +33,9 @@ export const useStyles = createStyles((theme) => ({
 
 	iconGroup: {
 		display: "none",
-		"&:hover": {
-			display: "inline-block",
-		},
 	},
+
+	showIcon: {
+		display: "block",
+	}
 }));
