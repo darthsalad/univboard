@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-	if (!request.nextUrl.pathname.includes("/auth")) {
+	if (request.nextUrl.pathname === "/") {
 		const token = request.cookies.get("jwt");
 		if (!token) {
 			const res = NextResponse.redirect(new URL("/auth/login", request.url));
@@ -30,12 +30,17 @@ export async function middleware(request: NextRequest) {
 			} else {
 				const res = NextResponse.redirect(new URL("/auth/login", request.url));
 				res.cookies.delete("jwt");
+				res.cookies.delete("user");
 				return res;
 			}
+		} else {
+			const data = await res.json();
+			console.log("error", data);
 		}
-	} else {
-		const token = request.cookies.get("jwt");
+	}
 
+	if (request.nextUrl.pathname.includes("/auth")){
+		const token = request.cookies.get("jwt");
 		if (token) {
 			const res = NextResponse.redirect(new URL("/", request.url));
 			return res;
@@ -44,7 +49,3 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 }
-
-// export const config = {
-// 	matcher: "/",
-// };

@@ -11,6 +11,7 @@ import { RegisterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { S3 } from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -23,13 +24,29 @@ export class AuthService {
 
   async register(
     createAuthDto: RegisterAuthDto,
+    file: Express.Multer.File,
   ): Promise<{ message: string; user: User }> {
     const user = await this.userModel.findOne({ email: createAuthDto.email });
     if (user) {
       throw new BadRequestException('User already exists');
     }
+    const s3 = new S3();
     const hashedPassword = await bcrypt.hash(createAuthDto.password, 10);
     createAuthDto.password = hashedPassword;
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Body: file.buffer,
+      Key: `${Date.now()}-${file.originalname}`,
+      ContentType: file.mimetype,
+      ACL: 'public-read',
+    };
+    try {
+      const avatarUpload = await s3.upload(params).promise();
+      createAuthDto.avatar = avatarUpload.Location;
+    } catch (err) {
+      console.log(err);
+      throw new BadRequestException('Error uploading avatar');
+    }
     const newUser = new this.userModel(createAuthDto);
     await newUser.save();
     return {
@@ -72,6 +89,14 @@ export class AuthService {
     return {
       user: user,
     };
+  }
+
+  async profile(uid: string): Promise<User> {
+    const user = await this.userModel.findById(uid);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async findAll(): Promise<User[]> {

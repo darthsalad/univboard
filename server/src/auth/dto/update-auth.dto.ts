@@ -7,6 +7,10 @@ export class UpdateAuthDto extends PartialType(RegisterAuthDto) {
   @IsOptional()
   name: string;
 
+  @IsString()
+  @IsOptional()
+  avatar: string;
+
   @IsEmail({}, { message: 'Email is invalid' })
   @IsOptional()
   email: string;

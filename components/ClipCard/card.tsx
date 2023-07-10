@@ -1,52 +1,12 @@
 import React from "react";
 import { Card, Text, Group, ActionIcon, Modal } from "@mantine/core";
 import { useStyles } from "./card.styles";
-import {
-	IconArchive,
-	IconDotsVertical,
-	IconPalette,
-	IconPinned,
-	IconPinnedFilled,
-	IconTrash,
-	IconUserPlus,
-} from "@tabler/icons-react";
+import { IconPinned, IconPinnedFilled } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import CardModal from "./modal";
+import IconOptions from "../IconOptions/IconOptions";
 
-const iconOptions = [
-	{
-		icon: IconUserPlus,
-		func: () => {
-			console.log("clicked");
-		},
-	},
-	{
-		icon: IconPalette,
-		func: () => {
-			console.log("clicked");
-		},
-	},
-	{
-		icon: IconTrash,
-		func: () => {
-			console.log("clicked");
-		},
-	},
-	{
-		icon: IconArchive,
-		func: () => {
-			console.log("clicked");
-		},
-	},
-	{
-		icon: IconDotsVertical,
-		func: () => {
-			console.log("clicked");
-		},
-	},
-];
-
-interface CardProps {
+type CardProps = {
 	title: string;
 	text: string;
 	labels: string[];
@@ -56,7 +16,7 @@ interface CardProps {
 	pinned: boolean;
 	createdOn: string;
 	modifiedOn: string;
-}
+};
 
 const ClipCard = ({
 	title,
@@ -130,7 +90,6 @@ const ClipCard = ({
 							</div>
 							<div>
 								<Group position="right">
-									{/* <IconUserPlus size={20} /> */}
 									<ActionIcon
 										radius="xl"
 										className={classes.iconGroup}
@@ -159,30 +118,26 @@ const ClipCard = ({
 					</div>
 				</div>
 				<div>
-					<Group position="apart">
-						{iconOptions.map((item, index) => {
-							return (
-								<ActionIcon radius="xl" onClick={item.func} key={index}>
-									<item.icon size={23} />
-								</ActionIcon>
-							);
-						})}
-					</Group>
+					<IconOptions card={true} />
 				</div>
 			</Card>
-			<Modal opened={opened} onClose={close} title="Clip Editing Modal">
-				<CardModal
-					title={title}
-					text={text}
-					labels={labels}
-					owner={owner}
-					collaborators={collaborators}
-					id={id}
-					pinned={pinned}
-					createdOn={createdOn}
-					modifiedOn={modifiedOn}
-				/>
-			</Modal>
+			<Modal.Root opened={opened} onClose={close}>
+				<Modal.Overlay />
+				<Modal.Content>
+					<CardModal
+						title={title}
+						text={text}
+						labels={labels}
+						owner={owner}
+						collaborators={collaborators}
+						id={id}
+						pinned={pinned}
+						createdOn={createdOn}
+						modifiedOn={modifiedOn}
+						close={close}
+					/>
+				</Modal.Content>
+			</Modal.Root>
 		</div>
 	);
 };

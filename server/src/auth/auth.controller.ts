@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   Patch,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dto/register-auth.dto';
@@ -15,7 +16,7 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -31,9 +32,13 @@ export class AuthController {
   }
 
   @Post('register')
-  @UseInterceptors(FileInterceptor('file'))
-  async register(@Body() createAuthDto: RegisterAuthDto, @Res() response: any) {
-    const userData = await this.authService.register(createAuthDto);
+  @UseInterceptors(FileInterceptor('avatar'))
+  async register(
+    @Body() createAuthDto: RegisterAuthDto,
+    @Res() response: any,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const userData = await this.authService.register(createAuthDto, file);
     return response.status(201).json({
       message: 'User Created',
       user: userData,
@@ -79,6 +84,18 @@ export class AuthController {
     response.clearCookie('jwt');
     return response.status(200).json({
       message: 'User logged out successfully',
+    });
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard())
+  async profile(@Req() request: any, @Res() response: Response) {
+    const uid = request.user._id.toString();
+    const userData = await this.authService.profile(uid);
+    return response.status(200).json({
+      avatar: userData.avatar,
+      name: userData.name,
+      email: userData.email,
     });
   }
 

@@ -25,7 +25,9 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user.clips;
+    const id = new mongoose.Types.ObjectId(uid);
+    const clips = await this.clipModel.find({ owner: id });
+    return clips;
   }
 
   async getClipById(uid: string, cid: string): Promise<Clip> {
@@ -33,7 +35,7 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
@@ -53,10 +55,13 @@ export class ClipsService {
     createClipDto.createdOn = new Date();
     createClipDto.modifiedOn = new Date();
     createClipDto.pinned = false;
+    createClipDto.collaborators = [];
+    createClipDto.archived = false;
+    createClipDto.backdrop = '';
+    createClipDto.labels = [];
     const clip = new this.clipModel(createClipDto);
-    user.clips.push(clip);
 
-    await user.save();
+    await clip.save();
     return {
       message: 'New Clip created',
       clip: clip,
@@ -72,14 +77,14 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
     updateClipDto.modifiedOn = new Date();
+    console.log(updateClipDto);
     Object.assign(clip, updateClipDto);
-    user.markModified('clips');
-    await user.save();
+    await clip.save();
     return {
       message: `Clip of id ${cid} updated.`,
       newClip: clip,
@@ -96,7 +101,7 @@ export class ClipsService {
       throw new NotFoundException('User not found');
     }
 
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
@@ -121,13 +126,7 @@ export class ClipsService {
       ...newCollaborators.map((collaborator) => collaborator._id.toString()),
     );
     clip.modifiedOn = new Date();
-    user.markModified('clips');
-    await user.save();
-
-    newCollaborators.forEach((collaborator) => {
-      collaborator.clips.push(clip);
-      collaborator.save();
-    });
+    await clip.save();
 
     return {
       message: `Collaborators added to clip of id ${cid}.`,
@@ -143,7 +142,7 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
@@ -179,7 +178,7 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
@@ -195,12 +194,7 @@ export class ClipsService {
       (collaborator) => collaborator != collaboratorId,
     );
     clip.modifiedOn = new Date();
-    user.markModified('clips');
-    await user.save();
-
-    collaborator.clips = collaborator.clips.filter((clip) => clip._id != cid);
-    collaborator.markModified('clips');
-    await collaborator.save();
+    await clip.save();
 
     return {
       message: `Collaborator of id ${collaboratorId} removed from clip of id ${cid}.`,
@@ -213,13 +207,12 @@ export class ClipsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const clip = user.clips.find((clip) => clip._id == cid);
+    const clip = await this.clipModel.findById(cid);
     if (!clip) {
       throw new NotFoundException('Clip not found');
     }
 
-    user.clips = user.clips.filter((clip) => clip._id != cid);
-    await user.save();
+    await this.clipModel.deleteOne({ _id: cid });
     return {
       message: `Clip of id ${cid} deleted.`,
     };
