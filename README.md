@@ -13,7 +13,7 @@ A universal clipboard-cum-notepad web app that allows you to copy and paste text
   - [ ] Photo upload - multiple photos (string[]) - gallery view
   - [ ] Add collaborators - multiple collaborators (string[])
 - [ ] Client setup
-  - [ ]  FAB for adding clips
+  - [x]  FAB for adding clips
   - [ ]  fetch request for each ActionIcon button
   - [ ]  Search bar for searching all notes in body & title
   - [ ]  Sidebar - set global zustand state for each filter & render accordingly in index.tsx

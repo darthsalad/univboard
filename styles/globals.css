@@ -18,6 +18,13 @@ body {
     width: 100%;
 }
 
+.main-content > .fab {
+    position: fixed;
+    bottom: 8%;
+    right: 8%;
+    z-index: 100;
+}
+
 @media (max-width: 768px) {
     .card-wrapper {
         justify-content: center;

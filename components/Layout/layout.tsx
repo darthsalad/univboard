@@ -32,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
 					},
 				})}
 			>
-				<main>{children}</main>
+				<main className="main-content">{children}</main>
 			</AppShell>
 		</div>
 	);

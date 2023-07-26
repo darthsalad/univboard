@@ -2,10 +2,11 @@ import ClipCard from "@/components/ClipCard/card";
 import { useQuery } from "@tanstack/react-query";
 import { baseURL } from "./_app";
 import { FC } from "react";
-import { Button, Code, Text } from "@mantine/core";
+import { ActionIcon, Button, Code, Text } from "@mantine/core";
 import PageLoader from "@/components/Loader/PageLoader";
 import { useAuthStore } from "@/lib/zustand.store";
 import React from "react";
+import { IconPlus } from "@tabler/icons-react";
 
 export interface ClipInterface {
 	_id: string;
@@ -49,42 +50,47 @@ const Home: FC = () => {
 	}
 
 	return (
-		<div className="card-wrapper">
-			{data && data.clips ? (
-				data.clips.map((clip) => (
-					<ClipCard
-						key={clip._id}
-						title={clip.title}
-						text={clip.text}
-						labels={clip.labels}
-						owner={clip.owner}
-						collaborators={clip.collaborators}
-						id={clip._id}
-						pinned={clip.pinned}
-						createdOn={clip.createdOn}
-						modifiedOn={clip.modifiedOn}
-					/>
-				))
-			) : (
-				<div
-					style={{
-						textAlign: "center",
-						marginTop: "20px",
-					}}
-				>
-					<Text
-						fw={500}
-						fz="xl"
+		<>
+			<div className="card-wrapper">
+				{data && data.clips ? (
+					data.clips.map((clip) => (
+						<ClipCard
+							key={clip._id}
+							title={clip.title}
+							text={clip.text}
+							labels={clip.labels}
+							owner={clip.owner}
+							collaborators={clip.collaborators}
+							id={clip._id}
+							pinned={clip.pinned}
+							createdOn={clip.createdOn}
+							modifiedOn={clip.modifiedOn}
+						/>
+					))
+				) : (
+					<div
 						style={{
-							display: "inline-block",
+							textAlign: "center",
+							marginTop: "20px",
 						}}
 					>
-						There are no clips to show. Click the <Code>+</Code> button to add a
-						new clip.
-					</Text>
-				</div>
-			)}
-		</div>
+						<Text
+							fw={500}
+							fz="xl"
+							style={{
+								display: "inline-block",
+							}}
+						>
+							There are no clips to show. Click the <Code>+</Code> button to add
+							a new clip.
+						</Text>
+					</div>
+				)}
+			</div>
+			<ActionIcon className="fab" color="blue" size="xl" variant="filled">
+				<IconPlus size="2rem" />
+			</ActionIcon>
+		</>
 	);
 };
 
