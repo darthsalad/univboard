@@ -9,25 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.0",
-    "@mantine/core": "^6.0.13",
-    "@mantine/dates": "^6.0.13",
-    "@mantine/hooks": "^6.0.13",
-    "@mantine/notifications": "^6.0.13",
-    "@tabler/icons-react": "^2.17.0",
-    "@tanstack/react-query": "^4.29.5",
-    "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
-    "@types/react-dom": "18.0.11",
-    "axios": "^1.4.0",
-    "dayjs": "^1.11.8",
-    "next": "13.3.0",
+    "@types/node": "20.5.0",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.15",
+    "next": "13.4.16",
+    "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.4",
-    "zustand": "^4.3.8"
-  },
-  "license": "MIT",
-  "author": "DarthSalad",
-  "devDependencies": {}
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
+  }
 }
