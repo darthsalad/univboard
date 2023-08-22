@@ -6,7 +6,6 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/darthsalad/univboard/internal/database"
-	"github.com/darthsalad/univboard/internal/routes"
 )
 
 type Server struct {
@@ -21,7 +20,8 @@ func CreateServer(db *database.Database) *Server {
 		DB:     db,
 		server: &http.Server{},
 	}
-	routes.CreateRoutes(server.Router)
+	CreateRoutes(server.Router, db)
+	server.Router.Use(middleware)
 	return server
 }
 
@@ -31,19 +31,17 @@ func (s *Server) Start(address string) error {
 	return s.server.ListenAndServe()
 }
 
-// Function for defining routes
-// func (s *Server) routes() {
-// 	s.Router.HandleFunc("/", s.handleIndex()).Methods("GET")
-// 	s.Router.HandleFunc("/users", s.handleUsers()).Methods("GET")
-// 	s.Router.HandleFunc("/users/{id}", s.handleUser()).Methods("GET")
-// 	s.Router.HandleFunc("/users", s.handleCreateUser()).Methods("POST")
-// 	s.Router.HandleFunc("/users/{id}", s.handleUpdateUser()).Methods("PUT")
-// 	s.Router.HandleFunc("/users/{id}", s.handleDeleteUser()).Methods("DELETE")
-// }
-
-// Function for stopping the server
 func (s *Server) Stop(ctx context.Context) error {
 	s.DB.Close()
 	return s.server.Shutdown(ctx)
+}
+
+func middleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// w.Header().Set("Access-Control-Allow-Origin", "*") 
+		// w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		// w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		next.ServeHTTP(w, r)
+	})
 }
 	
