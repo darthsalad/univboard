@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/darthsalad/univboard/internal/database"
-	"github.com/darthsalad/univboard/pkg/utils"
-	"github.com/darthsalad/univboard/pkg/auth"
+	"github.com/darthsalad/univboard/pkg/database"
+	"github.com/darthsalad/univboard/internal/utils"
+	"github.com/darthsalad/univboard/internal/auth"
 )
 
 type apiFunc func(w http.ResponseWriter, r *http.Request) error

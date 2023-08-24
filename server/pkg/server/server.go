@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/darthsalad/univboard/internal/database"
+	"github.com/darthsalad/univboard/pkg/database"
 )
 
 type Server struct {
