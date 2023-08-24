@@ -7,10 +7,11 @@ import (
 	"strings"
 )
 
-func Logln(msg string) {
+func Logln(msgs ...string) {
 	_, file, line, _ := runtime.Caller(1)
 	file = strings.Split(file, "/")[len(strings.Split(file, "/"))-1]
 	logger := log.New(os.Stdout, "LOG: ", log.Ldate|log.Ltime)
+	msg := strings.Join(msgs, " ")
 	logger.Printf("%s:%d: %s", file, line, msg)
 }
 
