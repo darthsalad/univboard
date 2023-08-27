@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -41,6 +43,11 @@ func VerifyToken(tokenStr string) (*jwt.Token, error) {
 	secretKey := os.Getenv("JWT_SECRET")
 
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			errStr := fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, errors.New(errStr)
+		}
+
 		return []byte(secretKey), nil
 	})
 	if err != nil {
@@ -58,4 +65,14 @@ func ExtractToken(r *http.Request) (string, error) {
 	}
 
 	return bearerToken, nil
+}
+
+type ctxKey string
+
+func SetTokenPayload(r *http.Request, token *jwt.Token) context.Context {
+	ctx := context.WithValue(r.Context(), ctxKey("user_id"), token.Claims.(jwt.MapClaims)["user_id"])
+	ctx = context.WithValue(ctx, ctxKey("username"), token.Claims.(jwt.MapClaims)["username"])
+	ctx = context.WithValue(ctx, ctxKey("email"), token.Claims.(jwt.MapClaims)["email"])
+
+	return ctx
 }

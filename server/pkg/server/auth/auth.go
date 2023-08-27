@@ -107,3 +107,99 @@ func LoginUser(db *database.Database, w http.ResponseWriter, r *http.Request) er
 
 	return nil
 }
+
+func GetProfile(db *database.Database, w http.ResponseWriter, r *http.Request) error {
+	username := r.Context().Value("username").(string)
+	userNew, err := db.FetchProfile(username)
+	if err != nil {
+		logger.Logf("err getting profile: %v", err)
+		utils.JsonResp(w, http.StatusInternalServerError, map[string]any{
+			"error": map[string]any{
+				"message":     err.Error(),
+				"status_code": http.StatusInternalServerError,
+			},
+		})
+		return err
+	}
+
+	err = utils.JsonResp(w, http.StatusOK, map[string]any{
+		"message": "Successfully retrieved profile",
+		"user": map[string]string{
+			"id":       userNew.ID,
+			"username": userNew.Username,
+			"email":    userNew.Email,
+			"created_at": userNew.CreatedAt,
+			"modified_at": userNew.UpdatedAt,
+		},
+	})
+	if err != nil {
+		logger.Logf("err responding: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func UpdateProfile(db *database.Database, w http.ResponseWriter, r *http.Request) error {
+	// update profile picture
+	
+	// username := r.Context().Value("username").(string)
+
+	// user := models.User{}
+	// user.Username = username
+	// if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+	// 	logger.Fatalf("err decoding: %v", err)
+	// 	return err
+	// }
+
+	// userNew, err := db.UpdateProfile(&user)
+
+	return nil
+}
+
+func LogoutUser(w http.ResponseWriter, r *http.Request) error {
+	http.SetCookie(w, &http.Cookie{
+			Name:     "jwt",
+			Value:    "",
+			Expires:  time.Now(),
+			HttpOnly: true,
+			Secure:   true,
+			Path:     "/",
+			SameSite: http.SameSiteNoneMode,
+		},
+	)
+
+	err := utils.JsonResp(w, http.StatusOK, map[string]any{
+		"message": "Successfully logged out",
+	})
+	if err != nil {
+		logger.Logf("err responding: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func DeleteUser (db *database.Database, w http.ResponseWriter, r *http.Request) error {
+	username := r.Context().Value("username").(string)
+
+	if err := db.DeleteUser(username); err != nil {
+		utils.JsonResp(w, http.StatusInternalServerError, map[string]any{
+			"error": map[string]any{
+				"message":     err.Error(),
+				"status_code": http.StatusInternalServerError,
+			},
+		})
+		return nil
+	}
+
+	err := utils.JsonResp(w, http.StatusOK, map[string]any{
+		"message": "Successfully deleted account",
+	})
+	if err != nil {
+		logger.Logf("err responding: %v", err)
+		return err
+	}
+
+	return nil
+}
