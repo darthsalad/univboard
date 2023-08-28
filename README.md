@@ -1,24 +1,17 @@
-# UnivBoard
-_A universal cross-platform clipboard_
+<div align="center">
 
----
-## Planned Features:
-- Clipboard syncing between Android/Mobile and Desktop
-- Electron App for desktop and React Native app for android
-- Auto copies clipboard contents to the cloud and makes it available cross-platform on active internet connection
-- Can take notes or attach files
----
-## Working on:
-### Frontend
-- UI for editing notes and pushing to ``clips`` array of user model
-- Options for Editor UI libraries:
-  - [Mantine Editor](https://mantine.dev/others/rte/) [_Priority_]
-  - [Slate.js](https://www.slatejs.org/examples/richtext)
-  - [Draft.js](https://draftjs.org/)
-  - [React-Markdown](https://www.npmjs.com/package/react-markdown) _(For markdown purposes)_
-- Modal for Editing and New Note option _(FAB)_
-- Option to pin notes
-### Backend
--  Collaborating feature (sharing and multi-management of notes)
+# Univboard
+
+<!-- badges -->
+
+`Uniboard` is a cross-platform universal clipboard and file-sharing platform. Share text, URLs, files and more across all your devices with ease.
+
+</div>
 
 
+## Built with
+- [Next.js](https://nextjs.org/) - Frontend framework
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [react-query](https://react-query.tanstack.com/) - Data fetching
+- [zustand](https://github.com/pmndrs/zustand) - State management
+- [TypeScript](https://www.typescriptlang.org/) - Type checking
