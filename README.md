@@ -4,7 +4,7 @@
 
 <!-- badges -->
 
-`Uniboard` is a cross-platform universal clipboard and file-sharing platform. Share text, URLs, files and more across all your devices with ease.
+`Uniboard` is a cross-platform universal clipboard and file-sharing platform. Share text, URLs, files and more across all your devices with ease with real-time updates.
 
 </div>
 
